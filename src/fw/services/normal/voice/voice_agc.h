@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-#include "drivers/imu.h"
-#include "drivers/imu/lsm6dso/lsm6dso.h"
-#include "drivers/imu/mmc5603nj/mmc5603nj.h"
+#pragma once
 
-void imu_init(void) {
-  lsm6dso_init();
-  mmc5603nj_init();
-}
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 
-void imu_power_up(void) {
-  lsm6dso_power_up();
-}
+typedef struct {
+  bool enabled;
+  int32_t gain_q12;
+  int32_t last_applied_gain_q12;
+  uint32_t smoothed_level;
+  uint16_t silence_run;
+} VoiceAgcState;
 
-void imu_power_down(void) {
-  lsm6dso_power_down();
-}
+void voice_agc_init(VoiceAgcState *agc);
+void voice_agc_process_frame(VoiceAgcState *agc, int16_t *samples, size_t sample_count);

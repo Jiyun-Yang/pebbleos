@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-#include "drivers/imu.h"
-#include "drivers/imu/lsm6dso/lsm6dso.h"
-#include "drivers/imu/mmc5603nj/mmc5603nj.h"
+#include "gh3x2x.h"
 
-void imu_init(void) {
-  lsm6dso_init();
-  mmc5603nj_init();
+void hrm_init(HRMDevice *dev) {
 }
 
-void imu_power_up(void) {
-  lsm6dso_power_up();
+void hrm_enable(HRMDevice *dev) {
+    dev->state->enabled = true;
 }
 
-void imu_power_down(void) {
-  lsm6dso_power_down();
+void hrm_disable(HRMDevice *dev) {
+    dev->state->enabled = false;
+}
+
+bool hrm_is_enabled(HRMDevice *dev) {
+    return dev->state->enabled;
 }

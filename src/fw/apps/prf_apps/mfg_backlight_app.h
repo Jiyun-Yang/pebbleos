@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Core Devices LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-#include "drivers/imu.h"
-#include "drivers/imu/lsm6dso/lsm6dso.h"
-#include "drivers/imu/mmc5603nj/mmc5603nj.h"
+#pragma once
 
-void imu_init(void) {
-  lsm6dso_init();
-  mmc5603nj_init();
-}
+//! @file mfg_display_app.h
+//!
+//! Test app that shows various display pattern
 
-void imu_power_up(void) {
-  lsm6dso_power_up();
-}
+#include "process_management/pebble_process_md.h"
 
-void imu_power_down(void) {
-  lsm6dso_power_down();
-}
+const PebbleProcessMd* mfg_backlight_app_get_info(void);

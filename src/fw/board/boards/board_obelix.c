@@ -22,7 +22,7 @@
 #include "bf0_hal_rcc.h"
 #include "board/board.h"
 #include "drivers/sf32lb52/debounced_button_definitions.h"
-#include "drivers/stubs/hrm.h"
+#include "drivers/hrm/gh3x2x/gh3x2x.h"
 #include "system/passert.h"
 
 
@@ -329,6 +329,7 @@ static I2CBusState s_i2c_bus_state_1;
 static I2CBus s_i2c_bus_1 = {
     .hal = &s_i2c_bus_hal_1,
     .state = &s_i2c_bus_state_1,
+    .stop_mode_inhibitor = InhibitorI2C1,
 };
 
 I2CBus *const I2C1_BUS = &s_i2c_bus_1;
@@ -378,6 +379,7 @@ static I2CBusState s_i2c_bus_state_2;
 static I2CBus s_i2c_bus_2 = {
     .hal = &s_i2c_bus_hal_2,
     .state = &s_i2c_bus_state_2,
+    .stop_mode_inhibitor = InhibitorI2C2,
 };
 
 I2CBus *const I2C2_BUS = &s_i2c_bus_2;
@@ -390,6 +392,13 @@ static const I2CSlavePort s_i2c_lsm6d = {
 };
 
 I2CSlavePort *const I2C_LSM6D = &s_i2c_lsm6d;
+
+static const I2CSlavePort s_i2c_mmc5603nj = {
+    .bus = &s_i2c_bus_2,
+    .address = 0x30,
+};
+
+I2CSlavePort *const I2C_MMC5603NJ = &s_i2c_mmc5603nj;
 
 static const I2CSlavePort s_i2c_npm1300 = {
     .bus = &s_i2c_bus_1,
@@ -456,6 +465,7 @@ static I2CBusState s_i2c_bus_state_3;
 static I2CBus s_i2c_bus_3 = {
     .hal = &s_i2c_bus_hal_3,
     .state = &s_i2c_bus_state_3,
+    .stop_mode_inhibitor = InhibitorI2C3,
 };
 
 I2CBus *const I2C3_BUS = &s_i2c_bus_3;
@@ -529,10 +539,10 @@ const BoardConfigButton BOARD_CONFIG_BUTTON = {
     [BUTTON_ID_DOWN]   = { "Down",   hwp_gpio1, 37, GPIO_PuPd_UP, false},
 #endif
   },
-  .timer = GPTIM1,
-  .timer_irqn = GPTIM1_IRQn,
+  .timer = GPTIM2,
+  .timer_irqn = GPTIM2_IRQn,
 };
-IRQ_MAP(GPTIM1, debounced_button_irq_handler, GPTIM1);
+IRQ_MAP(GPTIM2, debounced_button_irq_handler, GPTIM2);
 
 static MicDeviceState mic_state = {
   .hdma = {

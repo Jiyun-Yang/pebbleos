@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-#include "drivers/imu.h"
-#include "drivers/imu/lsm6dso/lsm6dso.h"
-#include "drivers/imu/mmc5603nj/mmc5603nj.h"
+#pragma once
 
-void imu_init(void) {
-  lsm6dso_init();
-  mmc5603nj_init();
-}
+#include "drivers/hrm.h"
 
-void imu_power_up(void) {
-  lsm6dso_power_up();
-}
+typedef struct HRMDeviceState {
+  bool enabled;
+} HRMDeviceState;
 
-void imu_power_down(void) {
-  lsm6dso_power_down();
-}
+typedef const struct HRMDevice {
+  HRMDeviceState *state;
+} HRMDevice;
